@@ -14,13 +14,13 @@
           }}</v-icon></v-btn
         >
       </div>
-      <v-form>
+      <v-form @submit.prevent>
         <div class="inputs">
           <div class="no-customers">
             <v-text-field
               label="Number Of Customers"
               type="number"
-              v-model="numberValue"
+              v-model="noCustomers"
               :min="1"
             ></v-text-field>
           </div>
@@ -28,7 +28,7 @@
             <v-text-field
               label="Min Interarrival "
               type="number"
-              v-model="numberValue"
+              v-model="minInterarrival"
               :min="1"
             ></v-text-field>
           </div>
@@ -36,17 +36,18 @@
             <v-text-field
               label="Max Interarrival"
               type="number"
-              v-model="numberValue"
+              v-model="maxInterarrival"
               :min="1"
             ></v-text-field>
           </div>
           <div class="upload-service">
             <label for="upload-file">{{ level==='Beginner'?'Upload Service Table': 'Upload Data Table' }}</label>
-            <input id="upload-file" type="file" title="Upload Service Table">
+            <input @change="onFileChange" id="upload-file" type="file" title="Upload Service Table">
           </div>
+          <h1 v-if="excelFile">Selected file: {{ excelFile.name }}</h1>
         </div>
         <div class="text-center">
-          <v-btn  type="submit" style="text-transform: capitalize"> Simulate and Save </v-btn>
+          <v-btn  type="submit" @click="SimulateData" style="text-transform: capitalize"> Simulate and Save </v-btn>
         </div>
       </v-form>
     </v-container>
@@ -54,7 +55,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify'
 const theme = useTheme()
@@ -66,6 +67,30 @@ const toggleTheme = () => {
 }
 const route = useRoute()
 let level = route.params.level;
+let noCustomers = ref(null);
+let minInterarrival = ref(null);
+let maxInterarrival = ref(null);
+let excelFile = ref(null);
+
+function SimulateData(){
+  if(level==='Beginner'){
+//
+  }else if (level==='Intermediate') {
+//
+  }else {
+//
+  }
+}
+function onFileChange(event) {
+  // Access the selected file(s) from the event
+  const files = event.target?.files || event;
+  excelFile.value = files ? files[0] : null;
+
+  if (excelFile.value) {
+    console.log('Selected file:', excelFile.value);
+    // Do further processing with the file if needed
+  }
+}
 </script>
 
 <style lang="scss" scoped>
