@@ -1,8 +1,5 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import { useBodyBackground } from '@/utilities/useBodyBackground.js';
-
-useBodyBackground();
 </script>
 
 <template>
