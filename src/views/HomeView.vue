@@ -50,7 +50,7 @@ const toggleTheme = () => {
     color: inherit;
   }
   .operations {
-    display: flex;
+    display: flex;  
     justify-content: space-between;
   }
 }
