@@ -6,7 +6,7 @@ import { RouterView } from 'vue-router'
   <RouterView />
 </template>
 
-<style scoped>
+<style>
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -16,7 +16,10 @@ header {
   display: block;
   margin: 0 auto 2rem;
 }
-
+a {
+  color: inherit;
+  text-decoration: none;
+}
 nav {
   width: 100%;
   font-size: 12px;
