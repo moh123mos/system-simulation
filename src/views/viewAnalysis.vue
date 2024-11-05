@@ -118,7 +118,7 @@
                   prepend-icon="mdi-table"
                   title="System analysis Table"
                   value="system-analysis"
-                  @click="tableSelected = 'system-analysis'"
+                  @click="tableSelected = 'system-analysis'" 
                 ></v-list-item>
               </v-list>
             </v-navigation-drawer>
