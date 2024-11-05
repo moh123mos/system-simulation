@@ -1,11 +1,9 @@
 <template>
   <div class="hero">
+    <v-btn id="go-back" class="go-back" @click="$router.push('/')"
+      ><v-icon>mdi-chevron-left</v-icon></v-btn
+    >
     <v-container>
-      <v-btn class="go-back"
-        ><router-link to="/"
-          ><v-icon>mdi-chevron-left</v-icon></router-link
-        ></v-btn
-      >
       <div class="head">
         <h1 class="text-center">Simulation Setup</h1>
         <v-btn class="dark-light-mode-btn" @click="toggleTheme"
@@ -306,10 +304,11 @@ const onFileChange = event => {
 }
 </script>
 <style lang="scss">
-.go-back {
+#go-back {
   position: fixed;
   left: 20px;
   top: 20px;
+  z-index: 999;
 }
 .tables {
   position: relative;

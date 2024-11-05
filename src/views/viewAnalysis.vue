@@ -7,10 +7,8 @@
     >
     <v-container>
       <div class="head">
-        <v-btn class="go-back"
-          ><router-link to="/"
-            ><v-icon>mdi-chevron-left</v-icon></router-link
-          ></v-btn
+        <v-btn class="go-back" @click="$router.push('/')"
+          ><v-icon>mdi-chevron-left</v-icon></v-btn
         >
       </div>
       <main>
@@ -27,7 +25,15 @@
         </div>
         <div class="tables">
           <v-layout class="table">
-            <v-navigation-drawer v-model="drawer" permanent>
+            <v-navigation-drawer
+              v-model="drawer"
+              permanent
+              :style="
+                level == 'Beginner'
+                  ? 'height: 200px !important;'
+                  : 'height: 280px !important;'
+              "
+            >
               <v-list-item>
                 <h3>Simulation Tables</h3>
                 <!-- <h3>Simulation Dashboard</h3> -->
@@ -62,26 +68,26 @@
                   title="Data Table"
                   value="data-table"
                   @click="tableSelected = 'data-table'"
-                  ></v-list-item>
+                ></v-list-item>
                 <v-list-item
-                prepend-icon="mdi-table"
+                  prepend-icon="mdi-table"
                   title="Arrival probability Table"
                   value="arrival-probability"
                   @click="tableSelected = 'arrival-probability'"
-                  ></v-list-item>
-                  <v-list-item
+                ></v-list-item>
+                <v-list-item
                   prepend-icon="mdi-table"
                   title="Service probability Table"
                   value="service-probability"
                   @click="tableSelected = 'service-probability'"
-                  ></v-list-item>
-                  <v-list-item
+                ></v-list-item>
+                <v-list-item
                   prepend-icon="mdi-table"
                   title="Simulation Table"
                   value="simulation"
                   @click="tableSelected = 'simulation'"
-                  ></v-list-item>
-                  <v-list-item
+                ></v-list-item>
+                <v-list-item
                   prepend-icon="mdi-table"
                   title="System analysis Table"
                   value="system-analysis"
@@ -118,12 +124,11 @@
                   prepend-icon="mdi-table"
                   title="System analysis Table"
                   value="system-analysis"
-                  @click="tableSelected = 'system-analysis'" 
+                  @click="tableSelected = 'system-analysis'"
                 ></v-list-item>
               </v-list>
             </v-navigation-drawer>
             <v-main style="height: 250px">
-
               <div class="intermediate-tab" v-if="level === 'Beginner'">
                 <div v-if="tableSelected == 'data-table'">
                   <v-data-table
@@ -401,10 +406,13 @@ const handleFileUpload = async event => {
     }
   }
   .v-table.v-data-table {
-      margin-top: 20px;
-      @media (max-width: 992px){
-        margin-top: 100px;
-      }
+    margin-top: 20px;
+    @media (max-width: 992px) {
+      margin-top: 100px;
+    }
+  }
+  .v-navigation-drawer__content {
+    overflow-y: hidden;
   }
   .table {
     .v-navigation-drawer {
@@ -422,7 +430,7 @@ const handleFileUpload = async event => {
       h3 {
         text-wrap: nowrap;
       }
-      @media (max-width: 992px){
+      @media (max-width: 992px) {
         margin-left: -10px;
         height: 90px !important;
         width: 256px !important;
