@@ -7,7 +7,9 @@
     >
     <v-container>
       <div class="head">
-        <v-btn class="go-back" @click="$router.push('/')"><v-icon>mdi-chevron-left</v-icon></v-btn>
+        <v-btn class="go-back" @click="$router.push('/')"
+          ><v-icon>mdi-chevron-left</v-icon></v-btn
+        >
       </div>
       <main>
         <div class="import-file">
