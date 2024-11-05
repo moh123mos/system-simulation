@@ -12,6 +12,7 @@
           :items="['Beginner', 'Intermediate', 'Advanced']"
           variant="solo-filled"
           v-model="level"
+          autocomplete
           value=""
         ></v-select>
         <div class="operations">
