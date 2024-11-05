@@ -7,9 +7,7 @@
     >
     <v-container>
       <div class="head">
-        <v-btn class="go-back" @click="$router.push('/')"
-          ><v-icon>mdi-chevron-left</v-icon></v-btn
-        >
+        <v-btn class="go-back" @click="$router.push('/')"><v-icon>mdi-chevron-left</v-icon></v-btn>
       </div>
       <main>
         <div class="import-file">
@@ -25,15 +23,7 @@
         </div>
         <div class="tables">
           <v-layout class="table">
-            <v-navigation-drawer
-              v-model="drawer"
-              permanent
-              :style="
-                level == 'Beginner'
-                  ? 'height: 200px !important;'
-                  : 'height: 280px !important;'
-              "
-            >
+            <v-navigation-drawer v-model="drawer" permanent>
               <v-list-item>
                 <h3>Simulation Tables</h3>
                 <!-- <h3>Simulation Dashboard</h3> -->
