@@ -133,15 +133,14 @@ async function Single_server_1() {
   const workbook = new ExcelJS.Workbook()
   const simulationSheet = workbook.addWorksheet('Simulation')
 
-  // Set up headers for the service table
-  simulationSheet.getCell('O3').value = 'Service Table'
-  simulationSheet.getCell('N5').value = 'Ser.ID'
-  simulationSheet.getCell('O5').value = 'Service'
-  simulationSheet.getCell('P5').value = 'Ser.Duration'
+  simulationSheet.getCell(`O3`).value ='Service Table' // Service ID
+  simulationSheet.getCell(`S5`).value ='Metric' // Service ID
+  simulationSheet.getCell(`T5`).value ='Value' // Service ID
+
 
   // Write the entire service table columns to the simulation sheet
   serviceTable.forEach((row, index) => {
-    const rowIndex = index + 6 // Start writing from row 6 for the service table
+    const rowIndex = index + 5 // Start writing from row 6 for the service table
 
     // Write each column's value
     simulationSheet.getCell(`N${rowIndex}`).value = row.SerID || '' // Service ID
@@ -272,8 +271,8 @@ simulationSheet.getCell('T5').value = 'Value'
     formula: `COUNTIF(I6:I${5 + noCustomers.value}, "Idle")`,
   }
 
-  simulationSheet.getCell('S11').value = 'Number of Busy States'
-  simulationSheet.getCell('T11').value = {
+  simulationSheet.getCell('S12').value = 'Number of Busy States'
+  simulationSheet.getCell('T12').value = {
     formula: `COUNTIF(I6:I${5 + noCustomers.value}, "Busy")`,
   }
 
