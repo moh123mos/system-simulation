@@ -134,15 +134,14 @@ async function createSimulationExcel() {
   const workbook = new ExcelJS.Workbook()
   const simulationSheet = workbook.addWorksheet('Simulation')
 
-  // Set up headers for the service table
-  simulationSheet.getCell('O3').value = 'Service Table'
-  simulationSheet.getCell('N5').value = 'Ser.ID'
-  simulationSheet.getCell('O5').value = 'Service'
-  simulationSheet.getCell('P5').value = 'Ser.Duration'
+  simulationSheet.getCell(`O3`).value ='Service Table' // Service ID
+  simulationSheet.getCell(`S5`).value ='Metric' // Service ID
+  simulationSheet.getCell(`T5`).value ='Value' // Service ID
+
 
   // Write the entire service table columns to the simulation sheet
   serviceTable.forEach((row, index) => {
-    const rowIndex = index + 6 // Start writing from row 6 for the service table
+    const rowIndex = index + 5 // Start writing from row 6 for the service table
 
     // Write each column's value
     simulationSheet.getCell(`N${rowIndex}`).value = row.SerID || '' // Service ID
@@ -243,42 +242,42 @@ async function createSimulationExcel() {
 
   // --- System Analysis Table ---
   simulationSheet.getCell('T3').value = 'System Analysis Table'
-  simulationSheet.getCell('S5').value = 'Number of Customers'
-  simulationSheet.getCell('T5').value = {
+  simulationSheet.getCell('S6').value = 'Number of Customers'
+  simulationSheet.getCell('T6').value = {
     formula: `COUNT(A6:A${5 + noCustomers.value})`,
   }
 
-  simulationSheet.getCell('S6').value = 'Number of Customers Waiting'
-  simulationSheet.getCell('T6').value = {
+  simulationSheet.getCell('S7').value = 'Number of Customers Waiting'
+  simulationSheet.getCell('T7').value = {
     formula: `COUNTIF(J6:J${5 + noCustomers.value}, "Waiting")`,
   }
 
-  simulationSheet.getCell('S7').value = 'Total Waiting Time'
-  simulationSheet.getCell('T7').value = {
+  simulationSheet.getCell('S8').value = 'Total Waiting Time'
+  simulationSheet.getCell('T8').value = {
     formula: `SUM(K6:K${5 + noCustomers.value})`,
   }
 
-  simulationSheet.getCell('S8').value = 'Average Waiting Time'
-  simulationSheet.getCell('T8').value = { formula: `T7/T5` }
+  simulationSheet.getCell('S9').value = 'Average Waiting Time'
+  simulationSheet.getCell('T9').value = { formula: `T8/T6` }
 
-  simulationSheet.getCell('S9').value = 'Probability of Waiting'
-  simulationSheet.getCell('T9').value = { formula: `T6/T5` }
+  simulationSheet.getCell('S10').value = 'Probability of Waiting'
+  simulationSheet.getCell('T10').value = { formula: `T7/T6` }
 
-  simulationSheet.getCell('S10').value = 'Number of Idle States'
-  simulationSheet.getCell('T10').value = {
+  simulationSheet.getCell('S11').value = 'Number of Idle States'
+  simulationSheet.getCell('T11').value = {
     formula: `COUNTIF(I6:I${5 + noCustomers.value}, "Idle")`,
   }
 
-  simulationSheet.getCell('S11').value = 'Number of Busy States'
-  simulationSheet.getCell('T11').value = {
+  simulationSheet.getCell('S12').value = 'Number of Busy States'
+  simulationSheet.getCell('T12').value = {
     formula: `COUNTIF(I6:I${5 + noCustomers.value}, "Busy")`,
   }
 
-  simulationSheet.getCell('S12').value = 'Probability of Being Busy'
-  simulationSheet.getCell('T12').value = { formula: `T11/T5` }
+  simulationSheet.getCell('S13').value = 'Probability of Being Busy'
+  simulationSheet.getCell('T13').value = { formula: `T12/T6` }
 
-  simulationSheet.getCell('S13').value = 'Probability of Being Idle'
-  simulationSheet.getCell('T13').value = { formula: `T10/T5` }
+  simulationSheet.getCell('S14').value = 'Probability of Being Idle'
+  simulationSheet.getCell('T14').value = { formula: `T11/T6` }
 
   // Save the workbook to a Blob
   try {
