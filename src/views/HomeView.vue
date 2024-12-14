@@ -5,16 +5,19 @@
         <h1 class="text-center">Queueing System Simulator</h1>
         <v-btn class="dark-light-mode-btn" @click="toggleTheme"><v-icon>{{ isDarkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon></v-btn>
       </div>
+
       <main>
-        <v-select
-          clearable
-          label="Select"
-          :items="['Beginner', 'Intermediate', 'Advanced']"
-          variant="solo-filled"
-          v-model="level"
-          autocomplete
-          value=""
-        ></v-select>
+        <select name="" id="" v-model="level">
+          <option value="Beginner">
+            Single Server QS Random
+          </option>
+          <option value="Intermediate">
+            Single Server QS probability
+          </option>
+          <option value="Advanced">
+            Double Server
+          </option>
+        </select>
         <div class="operations">
           <v-btn
             ><router-link class="link" :to="level+'/create-analysis/'"

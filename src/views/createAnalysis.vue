@@ -79,11 +79,10 @@ const toggleTheme = () => {
 const route = useRoute()
 let level = route.params.level
 let noCustomers = ref(null)
-let minInterarrival = ref(null)
-let maxInterarrival = ref(null)
+let minInterarrival = ref(0)
+let maxInterarrival = ref(100)
 let excelFile = ref(null)
-
-async function createSimulationExcel() {
+async function Single_server_1() {
   // Check if a file has been uploaded
   if (!excelFile.value) {
     alert('Please upload a service table file first.')
@@ -243,29 +242,33 @@ async function createSimulationExcel() {
 
   // --- System Analysis Table ---
   simulationSheet.getCell('T3').value = 'System Analysis Table'
-  simulationSheet.getCell('S5').value = 'Number of Customers'
-  simulationSheet.getCell('T5').value = {
+
+simulationSheet.getCell('S5').value = 'Metric'
+simulationSheet.getCell('T5').value = 'Value'
+
+  simulationSheet.getCell('S6').value = 'Number of Customers'
+  simulationSheet.getCell('T6').value = {
     formula: `COUNT(A6:A${5 + noCustomers.value})`,
   }
 
-  simulationSheet.getCell('S6').value = 'Number of Customers Waiting'
-  simulationSheet.getCell('T6').value = {
+  simulationSheet.getCell('S7').value = 'Number of Customers Waiting'
+  simulationSheet.getCell('T7').value = {
     formula: `COUNTIF(J6:J${5 + noCustomers.value}, "Waiting")`,
   }
 
-  simulationSheet.getCell('S7').value = 'Total Waiting Time'
-  simulationSheet.getCell('T7').value = {
+  simulationSheet.getCell('S8').value = 'Total Waiting Time'
+  simulationSheet.getCell('T8').value = {
     formula: `SUM(K6:K${5 + noCustomers.value})`,
   }
 
-  simulationSheet.getCell('S8').value = 'Average Waiting Time'
-  simulationSheet.getCell('T8').value = { formula: `T7/T5` }
+  simulationSheet.getCell('S9').value = 'Average Waiting Time'
+  simulationSheet.getCell('T9').value = { formula: `T8/T6` }
 
-  simulationSheet.getCell('S9').value = 'Probability of Waiting'
-  simulationSheet.getCell('T9').value = { formula: `T6/T5` }
+  simulationSheet.getCell('S10').value = 'Probability of Waiting'
+  simulationSheet.getCell('T10').value = { formula: `T7/T6` }
 
-  simulationSheet.getCell('S10').value = 'Number of Idle States'
-  simulationSheet.getCell('T10').value = {
+  simulationSheet.getCell('S11').value = 'Number of Idle States'
+  simulationSheet.getCell('T11').value = {
     formula: `COUNTIF(I6:I${5 + noCustomers.value}, "Idle")`,
   }
 
@@ -275,10 +278,10 @@ async function createSimulationExcel() {
   }
 
   simulationSheet.getCell('S12').value = 'Probability of Being Busy'
-  simulationSheet.getCell('T12').value = { formula: `T11/T5` }
+  simulationSheet.getCell('T12').value = { formula: `T12/T6` }
 
   simulationSheet.getCell('S13').value = 'Probability of Being Idle'
-  simulationSheet.getCell('T13').value = { formula: `T10/T5` }
+  simulationSheet.getCell('T13').value = { formula: `T11/T6` }
 
   // Save the workbook to a Blob
   try {
@@ -288,11 +291,12 @@ async function createSimulationExcel() {
     alert('Simulation results saved successfully.')
   } catch (error) {
     console.error('Error saving the Excel file:', error)
-    alert('Failed to save the Excel file. Please try again.')
+    alert('Failed to save the Excel file. Please try again.') 
   }
 }
 
-async function generateSimulationExcel() {
+
+async function Single_server_2() {
   if (!excelFile.value) {
     alert('Please upload a service table file first.')
     return
@@ -510,7 +514,7 @@ async function generateSimulationExcel() {
   simulationSheet.getCell('AG3').value = 'Value'
   simulationSheet.getCell('AF4').value = 'Number of Customers'
   simulationSheet.getCell('AG4').value = {
-    formula: `COUNT(A4:A${noCustomers.value + 3})`,
+    formula: `COUNT(A4:A${noCustomers.value + 3})+3`,
   }
   simulationSheet.getCell('AF5').value = 'Total Waiting'
   simulationSheet.getCell('AG5').value = {
@@ -549,7 +553,7 @@ async function generateSimulationExcel() {
   saveAs(blob, 'Simulation.xlsx') // Prompt download
 }
 
-async function generateSimulationExcel2() {
+async function Double_server() {
   if (!excelFile.value) {
     alert('Please upload a service table file first.')
     return
@@ -628,9 +632,9 @@ async function generateSimulationExcel2() {
   simulationSheet.getCell('P3').value = 'Time Between Arrivals'
   simulationSheet.getCell('Q3').value = 'Probability'
   simulationSheet.getCell('R3').value = 'Cumulative'
-  simulationSheet.getCell('S3').value = 'Random Digit Assignment'
-  simulationSheet.getCell('S2').value = 'From'
-  simulationSheet.getCell('T2').value = 'To'
+  simulationSheet.getCell('S2').value = 'Random Digit Assignment'
+  simulationSheet.getCell('S3').value = 'From'
+  simulationSheet.getCell('T3').value = 'To'
 
   // Function to convert a time format to minutes
   function convertToMinutes(time) {
@@ -682,12 +686,12 @@ async function generateSimulationExcel2() {
 
   // Write server 1 Probability table
   simulationSheet.getCell('X1').value = 'Server_01'
-  simulationSheet.getCell('Y2').value = 'From'
-  simulationSheet.getCell('Z2').value = 'To'
+  simulationSheet.getCell('Y3').value = 'From'
+  simulationSheet.getCell('Z3').value = 'To'
   simulationSheet.getCell('V3').value = 'Service Time'
   simulationSheet.getCell('W3').value = 'Probability'
   simulationSheet.getCell('X3').value = 'Cumulative'
-  simulationSheet.getCell('Y3').value = 'Random Digit Assignment'
+  simulationSheet.getCell('Y2').value = 'Random Digit Assignment'
   const uniqueDurations1 = [
     ...new Set(
       serviceData
@@ -723,12 +727,12 @@ async function generateSimulationExcel2() {
 
   // Write server 2 Probability table
   simulationSheet.getCell('AD1').value = 'Server_02'
-  simulationSheet.getCell('AE2').value = 'From'
-  simulationSheet.getCell('AF2').value = 'To'
+  simulationSheet.getCell('AE3').value = 'From'
+  simulationSheet.getCell('AF3').value = 'To'
   simulationSheet.getCell('AB3').value = 'Service Time'
   simulationSheet.getCell('AC3').value = 'Probability'
   simulationSheet.getCell('AD3').value = 'Cumulative'
-  simulationSheet.getCell('AE3').value = 'Random Digit Assignment'
+  simulationSheet.getCell('AE2').value = 'Random Digit Assignment'
 
   const uniqueDurations = [
     ...new Set(
@@ -792,14 +796,13 @@ async function generateSimulationExcel2() {
         formula: `LOOKUP(E4,Y4:Z${uniqueDurations1.length + 3},V4:V${uniqueDurations1.length + 3})`,
       }
       simulationSheet.getCell(`H${i - 1}`).value = { formula: `F4+G4` }
-      simulationSheet.getCell(`L${i - 1}`).value = {
-        formula: `MINUTE(IF(F4<>"",I4-D4,F4-D4))`,
+      simulationSheet.getCell(`L${4}`).value = {
+        formula: `MAX(F5,I5)-D5`,
       }
       simulationSheet.getCell(`M${i - 1}`).value = {
         formula: `IF(F4<>"","Server_01","Server_02")`,
       }
     }
-
     simulationSheet.getCell(`A${i}`).value = { formula: `A${i - 1}+1` }
     simulationSheet.getCell(`B${i}`).value = { formula: `RANDBETWEEN(1, 100)` }
     simulationSheet.getCell(`C${i}`).value = {
@@ -808,10 +811,11 @@ async function generateSimulationExcel2() {
     simulationSheet.getCell(`D${i}`).value = { formula: `D${i - 1}+C${i}` }
     simulationSheet.getCell(`E${i}`).value = { formula: `RANDBETWEEN(1, 100)` }
     simulationSheet.getCell(`F${i}`).value = {
-      formula: `IF(MAX('$H$4':H${i - 1})>MAX('$K$4:K${i - 1}),"",MAX($H$4:H$4,D${i}))`,
+      formula: `IF(MAX($H$4:H${i - 1}) > MAX($K$4:K${i - 1}), "", MAX($H$4:H${i - 1}, D${i}))`
     }
-    simulationSheet.getCell(`G${i}`).value = {
-      formula: `LOOKUP(E${i},Y4:Z${uniqueDurations.length + 3},V4:V${uniqueDurations.length + 3})`,
+    
+      simulationSheet.getCell(`G${i}`).value = {
+      formula: `IF(F${i}<>"",LOOKUP(E${i},Y4:Z${uniqueDurations.length + 3},V4:V${uniqueDurations.length + 3}),"")`,
     }
     simulationSheet.getCell(`H${i}`).value = {
       formula: `IF(F${i}<>"",F${i}+G${i},"")`,
@@ -827,12 +831,56 @@ async function generateSimulationExcel2() {
       formula: `IF(I${i}<>"",I${i}+J${i},"")`,
     }
     simulationSheet.getCell(`L${i}`).value = {
-      formula: `MINUTE(IF(F${i - 1}<>"",F${i - 1}-D${i - 1},I${i - 1}-D${i - 1}))`,
+      formula: `MAX(F${i},I${i})-D${i}`,
     }
     simulationSheet.getCell(`M${i}`).value = {
       formula: `IF(F${i - 1}<>"","Server_01","Server_02")`,
     }
   }
+
+  simulationSheet.getCell('AS1').value = 'System analysis Table'
+  simulationSheet.getCell('AR3').value = 'Metric'
+  simulationSheet.getCell('AS3').value = 'Value'
+
+   simulationSheet.getCell('AR4').value = 'No of Customers'
+   simulationSheet.getCell('AS4').value = {
+    formula: `COUNT(A4:A${noCustomers.value + 3})+3`,
+  } 
+
+   simulationSheet.getCell('AR5').value = 'Total Waiting'
+   simulationSheet.getCell('AS5').value = {
+    formula: `SUM(L4:L${noCustomers.value + 3})`,
+  }
+
+
+
+   simulationSheet.getCell('AR6').value = 'Avg Waiting'
+   simulationSheet.getCell('AS6').value = { formula: `AS5/AS4` }
+
+   
+   simulationSheet.getCell('AR7').value = 'Probability of Waiting'
+   simulationSheet.getCell('AS7').value = {
+    formula: `COUNTIF(L4:L${noCustomers.value + 3}, ">0") / AS4`,
+  }
+
+
+
+   simulationSheet.getCell('AR8').value = 'Number of Idle server_01'
+   simulationSheet.getCell('AS8').value = {
+    formula: `COUNTIF(M4:M${noCustomers.value + 3}, "Server_01")`,
+  }
+
+   simulationSheet.getCell('AR9').value = 'Number of Idle server_02'
+   simulationSheet.getCell('AS9').value = {
+    formula: `COUNTIF(M4:M${noCustomers.value + 3}, "Server_02")`,
+  }
+
+
+ 
+
+
+
+
 
   // Write the output Excel file
   const excelBuffer = await workbook.xlsx.writeBuffer() // Use writeBuffer
@@ -842,11 +890,11 @@ async function generateSimulationExcel2() {
 
 const SimulateData = async () => {
   if (level === 'Beginner') {
-    await createSimulationExcel() // Call the function when level is Beginner
+    await Single_server_1() // Call the function when level is Beginner
   } else if (level == 'Intermediate') {
-    await generateSimulationExcel()
-  } else {
-    await generateSimulationExcel2()
+    await Single_server_2()
+  } else if (level=='Advanced'){
+    await Double_server()
   }
   // You can add more logic for other levels here
 }

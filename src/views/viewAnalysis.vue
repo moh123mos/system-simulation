@@ -7,7 +7,7 @@
     >
     <v-container>
       <div class="head">
-        <v-btn class="go-back" @click="$router.push('/')"
+        <v-btn class="go-back" @click="navigateBack"
           ><v-icon>mdi-chevron-left</v-icon></v-btn
         >
       </div>
@@ -37,17 +37,17 @@
                 <v-list-item
                   prepend-icon="mdi-table"
                   title="Simulation Table"
-                  value="simulation"
+                  @click="tableSelected = 'simulation-table'"
                 ></v-list-item>
                 <v-list-item
                   prepend-icon="mdi-table"
                   title="Service Table"
-                  value="service"
+                  @click="tableSelected = 'service-table'"
                 ></v-list-item>
                 <v-list-item
                   prepend-icon="mdi-table"
                   title="Analysis Table"
-                  value="analysis"
+                  @click="tableSelected = 'system-analysis'"
                 ></v-list-item>
               </v-list>
               <v-list
@@ -121,32 +121,18 @@
               </v-list>
             </v-navigation-drawer>
             <v-main style="height: 250px">
-              <div class="intermediate-tab" v-if="level === 'Beginner'">
-                <div v-if="tableSelected == 'data-table'">
-                  <v-data-table
-                    :headers="DataTable['header']"
-                    :items="DataTable.body"
-                  >
-                  </v-data-table>
-                </div>
-                <div v-if="tableSelected == 'arrival-probability'">
-                  <v-data-table
-                    :headers="arrivalProbabilityTable['header']"
-                    :items="arrivalProbabilityTable.body"
-                  >
-                  </v-data-table>
-                </div>
-                <div v-if="tableSelected == 'service-probability'">
-                  <v-data-table
-                    :headers="ServiceProbabilityTable['header']"
-                    :items="ServiceProbabilityTable.body"
-                  >
-                  </v-data-table>
-                </div>
-                <div v-if="tableSelected == 'simulation'">
+              <div class="beginner-tab" v-if="level === 'Beginner'">
+                <div v-if="tableSelected == 'simulation-table'">
                   <v-data-table
                     :headers="simulationTable['header']"
                     :items="simulationTable.body"
+                  >
+                  </v-data-table>
+                </div>
+                <div v-if="tableSelected == 'service-table'">
+                  <v-data-table
+                    :headers="ServiceProbabilityTable['header']"
+                    :items="ServiceProbabilityTable.body"
                   >
                   </v-data-table>
                 </div>
@@ -208,7 +194,8 @@ import { computed } from 'vue'
 import { useTheme } from 'vuetify'
 import { ref } from 'vue'
 import ExcelJS from 'exceljs'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { nextTick } from 'vue'
 let level = useRoute().params.level
 
 const theme = useTheme()
@@ -239,6 +226,12 @@ const SystemAnalysisTable = ref({
   header: [],
   body: [],
 })
+const router = useRouter()
+const navigateBack = () => {
+  nextTick(() => {
+    router.push('/')
+  })
+}
 const formatToClockTime = value => {
   const date = new Date(value)
   if (!isNaN(date.getTime())) {
@@ -258,11 +251,13 @@ const handleFileUpload = async event => {
     await workbook.xlsx.load(arrayBuffer)
     const worksheet = workbook.worksheets[0] // Access the first sheet
     worksheet.columns.forEach(column => {
-      const columnHeader = column.values[3] // First row header
+      let startrow = level == 'Intermediate' ? 3 : 5
+
+      const columnHeader = column.values[startrow] // First row header
       columnsData[columnHeader] = []
       // Start from the second row to skip the header
       column.eachCell((cell, rowNumber) => {
-        if (rowNumber > 3) {
+        if (rowNumber > startrow) {
           // Skip header row
           columnsData[columnHeader].push(cell.value)
         }
@@ -271,25 +266,48 @@ const handleFileUpload = async event => {
     const columnsKeys = Object.keys(columnsData)
     let colsData = {}
     let idx = 0
-    // get headers of table
-    for (const key of columnsKeys) {
-      colsData[key] = columnsData[key]
-      // console.log(colsData[key])
-      if (idx <= 10) {
-        simulationTable.value['header'].push({ title: key, value: key })
-      } else if (idx > 11 && idx <= 16) {
-        arrivalProbabilityTable.value['header'].push({ title: key, value: key })
-        // console.log('arrivalProbabilityTable', colsData[key])
-      } else if (idx >= 17 && idx < 22) {
-        ServiceProbabilityTable.value['header'].push({ title: key, value: key })
-      } else if (idx >= 22 && idx < 28) {
-        DataTable.value['header'].push({ title: key, value: key })
-      } else if (idx > 27) {
-        SystemAnalysisTable.value['header'].push({ title: key, value: key })
+    if (level == 'Intermediate') {
+      // get headers of table of intermediate
+      for (const key of columnsKeys) {
+        colsData[key] = columnsData[key]
+        if (idx <= 10) {
+          simulationTable.value['header'].push({ title: key, value: key })
+        } else if (idx > 11 && idx <= 16) {
+          arrivalProbabilityTable.value['header'].push({
+            title: key,
+            value: key,
+          })
+          // console.log('arrivalProbabilityTable', colsData[key])
+        } else if (idx >= 17 && idx < 22) {
+          ServiceProbabilityTable.value['header'].push({
+            title: key,
+            value: key,
+          })
+        } else if (idx >= 22 && idx < 28) {
+          DataTable.value['header'].push({ title: key, value: key })
+        } else if (idx > 27) {
+          SystemAnalysisTable.value['header'].push({ title: key, value: key })
+        }
+        idx++
       }
-      idx++
+    } else if (level == 'Beginner') {
+      for (const key of columnsKeys) {
+        colsData[key] = columnsData[key]
+        if (idx <= 10) {
+          simulationTable.value['header'].push({ title: key, value: key })
+        } else if (idx >= 12 && idx <= 14) {
+          ServiceProbabilityTable.value['header'].push({
+            title: key,
+            value: key,
+          })
+        } else if (idx >= 15) {
+          SystemAnalysisTable.value['header'].push({ title: key, value: key })
+        }
+        idx++
+      }
+      console.log(colsData)
+      console.log(columnsKeys)
     }
-    console.log(columnsKeys)
     const headersSimulation = simulationTable.value.header.map(
       header => header.value,
     )
@@ -304,71 +322,113 @@ const handleFileUpload = async event => {
       header => header.value,
     )
     // get body of table and convert to array
-    for (let i = 0; i < colsData['Customer No'].length; i++) {
-      const row = {}
-      headersSimulation.forEach(header => {
-        let val = colsData[header][i]
-        row[header] =
-          (val || val == 0) && typeof val !== 'object'
-            ? val
-            : val?.result != null
-              ? val?.result
-              : 0
-      })
-      simulationTable.value.body.push(row)
-    }
-    for (let i = 0; i < colsData['Time Between Arrivals'].length; i++) {
-      const row = {}
-      headersArrival.forEach(header => {
-        let val = colsData[header][i]
-        row[header] =
-          (val || val == 0) && typeof val !== 'object'
-            ? val
-            : val?.result != null
-              ? val?.result
-              : 0
-      })
-      arrivalProbabilityTable.value.body.push(row)
-    }
-    for (let i = 0; i < colsData['Service Time'].length; i++) {
-      const row = {}
-      headersService.forEach(header => {
-        let val = colsData[header][i]
-        row[header] =
-          (val || val == 0) && typeof val !== 'object'
-            ? val
-            : val?.result != null
-              ? val?.result
-              : 0
-      })
-      ServiceProbabilityTable.value.body.push(row)
-    }
-    for (let i = 0; i < colsData['ID'].length; i++) {
-      const row = {}
-      headersDataTable.forEach(header => {
-        let val = colsData[header][i]
-        if (header == 'arrival time') val = formatToClockTime(val)
-        row[header] =
-          (val || val == 0) && typeof val !== 'object'
-            ? val
-            : val?.result != null
-              ? val?.result
-              : 0
-      })
-      DataTable.value.body.push(row)
-    }
-    for (let i = 0; i < colsData['service'].length; i++) {
-      const row = {}
-      headersSystemAnalysisTable.forEach(header => {
-        let val = colsData[header][i]
-        row[header] =
-          (val || val == 0) && typeof val !== 'object'
-            ? val
-            : val?.result != null
-              ? val?.result
-              : 0
-      })
-      SystemAnalysisTable.value.body.push(row)
+    if (level == 'Intermediate') {
+      for (let i = 0; i < colsData['Customer No'].length; i++) {
+        const row = {}
+        headersSimulation.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        simulationTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['Time Between Arrivals'].length; i++) {
+        const row = {}
+        headersArrival.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        arrivalProbabilityTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['Service Time'].length; i++) {
+        const row = {}
+        headersService.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        ServiceProbabilityTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['ID'].length; i++) {
+        const row = {}
+        headersDataTable.forEach(header => {
+          let val = colsData[header][i]
+          if (header == 'arrival time') val = formatToClockTime(val)
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        DataTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['Metric'].length; i++) {
+        const row = {}
+        headersSystemAnalysisTable.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        SystemAnalysisTable.value.body.push(row)
+      }
+    } else if (level == 'Beginner') {
+      for (let i = 0; i < colsData['Customer'].length; i++) {
+        const row = {}
+        headersSimulation.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        simulationTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['Ser.ID'].length; i++) {
+        const row = {}
+        headersService.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        ServiceProbabilityTable.value.body.push(row)
+      }
+      for (let i = 0; i < colsData['Metric'].length; i++) {
+        const row = {}
+        headersSystemAnalysisTable.forEach(header => {
+          let val = colsData[header][i]
+          row[header] =
+            (val || val == 0) && typeof val !== 'object'
+              ? val
+              : val?.result != null
+                ? val?.result
+                : 0
+        })
+        SystemAnalysisTable.value.body.push(row)
+      }
     }
   }
 }
@@ -403,9 +463,9 @@ const handleFileUpload = async event => {
       margin-top: 100px;
     }
   }
-  .v-navigation-drawer__content {
-    overflow-y: hidden;
-  }
+  // .v-navigation-drawer__content {
+  //   overflow-y: hidden;
+  // }
   .table {
     .v-navigation-drawer {
       margin: 0;
