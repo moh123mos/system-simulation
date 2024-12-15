@@ -1,10 +1,124 @@
 <template>
-  <div class="">
-    <h1>Simaultion</h1>
+  <!-- input file -->
+  <div class="create-analysis  pb-[80px]">
+    <div class="input">
+      <div class="flex items-center justify-center w-full">
+        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                </svg>
+                <p class="mb-2 text-sm text-gray-700 dark:text-gray-400"><span class="font-semibold">upload File</span></p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">xlsx , xls</p>
+            </div>
+            <input id="dropzone-file" type="file" class="hidden" />
+        </label>
+      </div>
+    </div>
+    <!-- Input Digits -->
+    <div class="session-input-container">
+      <div class="session-input-wrapper">
+        <label for="min" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Min interarrival<span class="required"> * </span></label>
+        <input id="min" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+      </div>
+      <div class="session-input-wrapper">
+        <label for="max" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Max interarrival<span class="required"> * </span></label>
+        <input id="max" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+      </div>
+      <div class="session-input-wrapper">
+        <label for="customer" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Number of customers<span class="required"> * </span></label>
+        <input id="customer" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+      </div>
+    </div>
+    <!-- Button -->
+    <button class="next  bg-white dark:bg-black "> Next </button>
   </div>
 </template>
 <style lang="scss">
+  .create-analysis {
+    background-image: url("@/assets/images/Photo.png");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    text-align: center;
+    z-index: 1;
+  }
+  .input {
+    width: 600px;
+    margin: 30px auto 40px auto;
+  }
+  .session-input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  .session-input-wrapper {
+    position: relative;
+  }
+  .session-label {
+    position: absolute;
+    font-size: 16px;
+    color: #0000ff;
+    top: -11px;
+    left: 29px;
+    background-color: transparent;
+    padding: 0 10px;
+    border-radius: 40px;
+  }
+  .required {
+    color: red;
+  }
+  .session-input-wrapper input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: black;
+    border: 1px solid #e0e0e0;
+    border-radius: 30px;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .session-input-wrapper input:focus {
+    border-color: rgb(55 65 81);
+    box-shadow: 0 0 4px rgba(0, 86, 179, 0.8);
+  }
+  .next {
+      display: block;
+      margin: auto;
+      background-color: #D94FD5;
+      margin-top: 10px;
+      padding: 13px 40px;
+      border-radius: 50px;
+      font-size:20px;
+      letter-spacing: 2px;
+      background-color: black;
+      border: 2px solid #D94FD5;
+      position: relative;
+      margin-bottom: -40px;
+      animation: borderAnimation 4s linear infinite;
+    }
 
+    @keyframes borderAnimation {
+      0% {
+        border-color: #FF3BFF;
+      }
+      25% {
+        border-color: #ECBFBF;
+      }
+      50% {
+        border-color: #5C24FF;
+      }
+      75% {
+        border-color: #D94FD5;
+      }
+      100% {
+        border-color: #FF3BFF;
+      }
+    }
 </style>
 
 <script setup>
