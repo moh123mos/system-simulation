@@ -1,80 +1,19 @@
 <template>
-  <div class="hero">
-    <v-btn id="go-back" class="go-back" @click="$router.push('/')"
-      ><v-icon>mdi-chevron-left</v-icon></v-btn
-    >
-    <v-container>
-      <div class="head">
-        <h1 class="text-center">Simulation Setup</h1>
-        <v-btn class="dark-light-mode-btn" @click="toggleTheme"
-          ><v-icon>{{
-            isDarkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night'
-          }}</v-icon></v-btn
-        >
-      </div>
-      <v-form @submit.prevent>
-        <div class="inputs">
-          <div class="no-customers">
-            <v-text-field
-              label="Number Of Customers"
-              type="number"
-              v-model="noCustomers"
-              :min="1"
-            ></v-text-field>
-          </div>
-          <div v-if="level === 'Beginner'" class="min-inter-arrival">
-            <v-text-field
-              label="Min Interarrival "
-              type="number"
-              v-model="minInterarrival"
-              :min="1"
-            ></v-text-field>
-          </div>
-          <div v-if="level === 'Beginner'" class="max-inter-arrival">
-            <v-text-field
-              label="Max Interarrival"
-              type="number"
-              v-model="maxInterarrival"
-              :min="1"
-            ></v-text-field>
-          </div>
-          <div class="upload-service">
-            <input
-              @change="onFileChange"
-              id="upload-file"
-              type="file"
-              title="Upload Service Table"
-            />
-          </div>
-        </div>
-        <div class="text-center">
-          <v-btn
-            type="submit"
-            @click="SimulateData"
-            style="text-transform: capitalize"
-          >
-            Simulate</v-btn
-          >
-        </div>
-      </v-form>
-    </v-container>
+  <div class="">
+    <h1>Simaultion</h1>
   </div>
 </template>
+<style lang="scss">
+
+</style>
 
 <script setup>
-import { computed, ref } from 'vue'
+import {  ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTheme } from 'vuetify'
 import ExcelJS from 'exceljs' // Import ExcelJS
 import { saveAs } from 'file-saver' // Ensure this is at the top of your script
 
 //import fs from 'fs'; // Node.js fs module
-
-const theme = useTheme()
-const isDarkMode = computed(() => theme.global.name.value === 'dark')
-const toggleTheme = () => {
-  theme.global.name.value = isDarkMode.value ? 'light' : 'dark'
-}
 
 const route = useRoute()
 let level = route.params.level
@@ -290,7 +229,7 @@ simulationSheet.getCell('T5').value = 'Value'
     alert('Simulation results saved successfully.')
   } catch (error) {
     console.error('Error saving the Excel file:', error)
-    alert('Failed to save the Excel file. Please try again.') 
+    alert('Failed to save the Excel file. Please try again.')
   }
 }
 
@@ -812,7 +751,7 @@ async function Double_server() {
     simulationSheet.getCell(`F${i}`).value = {
       formula: `IF(MAX($H$4:H${i - 1}) > MAX($K$4:K${i - 1}), "", MAX($H$4:H${i - 1}, D${i}))`
     }
-    
+
       simulationSheet.getCell(`G${i}`).value = {
       formula: `IF(F${i}<>"",LOOKUP(E${i},Y4:Z${uniqueDurations.length + 3},V4:V${uniqueDurations.length + 3}),"")`,
     }
@@ -844,7 +783,7 @@ async function Double_server() {
    simulationSheet.getCell('AR4').value = 'No of Customers'
    simulationSheet.getCell('AS4').value = {
     formula: `COUNT(A4:A${noCustomers.value + 3})+3`,
-  } 
+  }
 
    simulationSheet.getCell('AR5').value = 'Total Waiting'
    simulationSheet.getCell('AS5').value = {
@@ -856,7 +795,7 @@ async function Double_server() {
    simulationSheet.getCell('AR6').value = 'Avg Waiting'
    simulationSheet.getCell('AS6').value = { formula: `AS5/AS4` }
 
-   
+
    simulationSheet.getCell('AR7').value = 'Probability of Waiting'
    simulationSheet.getCell('AS7').value = {
     formula: `COUNTIF(L4:L${noCustomers.value + 3}, ">0") / AS4`,
@@ -875,7 +814,7 @@ async function Double_server() {
   }
 
 
- 
+
 
 
 
@@ -902,14 +841,4 @@ const onFileChange = event => {
   excelFile.value = event.target.files[0] // Store the uploaded file
 }
 </script>
-<style lang="scss">
-#go-back {
-  position: fixed;
-  left: 20px;
-  top: 20px;
-  z-index: 999;
-}
-.tables {
-  position: relative;
-}
-</style>
+

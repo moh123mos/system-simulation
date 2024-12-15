@@ -1,11 +1,15 @@
-<script setup>
-import { RouterView } from 'vue-router'
-</script>
 
 <template>
-  <RouterView />
+  <div class="min-h-screen duration-300 bg-white dark:bg-black text-black dark:text-white">
+    <NavBar />
+    <RouterView />
+  </div>
 </template>
 
+<script setup>
+import { RouterView } from 'vue-router'
+import NavBar from './components/NavBar.vue';
+</script>
 <style>
 header {
   line-height: 1.5;

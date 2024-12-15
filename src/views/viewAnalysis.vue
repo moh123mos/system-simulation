@@ -190,19 +190,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useTheme } from 'vuetify'
 import { ref } from 'vue'
 import ExcelJS from 'exceljs'
 import { useRoute, useRouter } from 'vue-router'
 import { nextTick } from 'vue'
 let level = useRoute().params.level
 
-const theme = useTheme()
-const isDarkMode = computed(() => theme.global.name.value === 'dark')
-const toggleTheme = () => {
-  theme.global.name.value = isDarkMode.value ? 'light' : 'dark'
-}
 let tableSelected = ref(null)
 // Ref to store the Excel data
 const columnsData = {}
