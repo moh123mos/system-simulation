@@ -8,7 +8,7 @@
     <v-container>
       <div class="head">
         <v-btn class="go-back" @click="navigateBack"
-          ><v-icon>mdi-chevron-left</v-icon></v-btn
+          >span.</v-btn
         >
       </div>
       <main>
