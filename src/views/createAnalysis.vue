@@ -1,128 +1,183 @@
 <template>
   <!-- input file -->
-  <div class="create-analysis  pb-[80px]">
+  <div class="create-analysis pb-[80px] min-h-[calc(100vh-80px)]">
     <div class="input">
       <div class="flex items-center justify-center w-full">
-        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                </svg>
-                <p class="mb-2 text-sm text-gray-700 dark:text-gray-400"><span class="font-semibold">upload File</span></p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">xlsx , xls</p>
-            </div>
-            <input id="dropzone-file" type="file" class="hidden" />
+        <label
+          for="dropzone-file"
+          class="flex flex-col items-center justify-center duration-300 w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-950 dark:bg-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg
+              class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm text-gray-700 dark:text-gray-400">
+              <span class="font-semibold">upload File</span>
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">xlsx , xls</p>
+          </div>
+          <input
+            id="dropzone-file"
+            type="file"
+            class="hidden"
+            @change="onFileChange"
+          />
         </label>
       </div>
     </div>
     <!-- Input Digits -->
     <div class="session-input-container">
       <div class="session-input-wrapper">
-        <label for="min" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Min interarrival<span class="required"> * </span></label>
-        <input id="min" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+        <label
+          for="customer"
+          class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white"
+          >Number of customers<span class="required"> * </span></label
+        >
+        <input
+          id="customer"
+          v-model="noCustomers"
+          min="1"
+          type="number"
+          placeholder="0"
+          class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white"
+        />
       </div>
-      <div class="session-input-wrapper">
-        <label for="max" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Max interarrival<span class="required"> * </span></label>
-        <input id="max" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+      <div class="session-input-wrapper" v-if="level === 'Beginner'">
+        <label
+          for="min"
+          class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white"
+          >Min interarrival<span class="required"> * </span></label
+        >
+        <input
+          id="min"
+          type="number"
+          v-model="minInterarrival"
+          placeholder="0"
+          class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white"
+        />
       </div>
-      <div class="session-input-wrapper">
-        <label for="customer" class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white">Number of customers<span class="required"> * </span></label>
-        <input id="customer" type="number" placeholder="0" class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white" />
+      <div class="session-input-wrapper" v-if="level === 'Beginner'">
+        <label
+          for="max"
+          class="session-label duration-300 bg-white dark:bg-black text-black dark:text-white"
+          >Max interarrival<span class="required"> * </span></label
+        >
+        <input
+          id="max"
+          type="number"
+          v-model="maxInterarrival"
+          placeholder="0"
+          class="border rounded p-2 duration-300 bg-white dark:bg-black text-black dark:text-white"
+        />
       </div>
     </div>
     <!-- Button -->
-    <button class="next  bg-white dark:bg-black "> Next </button>
+    <button class="next bg-white dark:bg-black" @click="SimulateData">
+      Simulate
+    </button>
   </div>
 </template>
 <style lang="scss">
-  .create-analysis {
-    background-image: url("@/assets/images/Photo.png");
-    background-size: cover;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    text-align: center;
-    z-index: 1;
-  }
-  .input {
-    width: 600px;
-    margin: 30px auto 40px auto;
-  }
-  .session-input-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-  }
-  .session-input-wrapper {
-    position: relative;
-  }
-  .session-label {
-    position: absolute;
-    font-size: 16px;
-    color: #0000ff;
-    top: -11px;
-    left: 29px;
-    background-color: transparent;
-    padding: 0 10px;
-    border-radius: 40px;
-  }
-  .required {
-    color: red;
-  }
-  .session-input-wrapper input {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    color: black;
-    border: 1px solid #e0e0e0;
-    border-radius: 30px;
-    outline: none;
-    appearance: none;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .session-input-wrapper input:focus {
-    border-color: rgb(55 65 81);
-    box-shadow: 0 0 4px rgba(0, 86, 179, 0.8);
-  }
-  .next {
-      display: block;
-      margin: auto;
-      background-color: #D94FD5;
-      margin-top: 10px;
-      padding: 13px 40px;
-      border-radius: 50px;
-      font-size:20px;
-      letter-spacing: 2px;
-      background-color: black;
-      border: 2px solid #D94FD5;
-      position: relative;
-      margin-bottom: -40px;
-      animation: borderAnimation 4s linear infinite;
-    }
+.create-analysis {
+  background-image: url('@/assets/images/Photo.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  text-align: center;
+  z-index: 1;
+}
+.input {
+  width: 600px;
+  margin: 30px auto 40px auto;
+}
+.session-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+.session-input-wrapper {
+  position: relative;
+}
+.session-label {
+  position: absolute;
+  font-size: 16px;
+  color: #0000ff;
+  top: -11px;
+  left: 29px;
+  background-color: transparent;
+  padding: 0 10px;
+  border-radius: 40px;
+}
+.required {
+  color: red;
+}
+.session-input-wrapper input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: black;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+.session-input-wrapper input:focus {
+  border-color: rgb(55 65 81);
+  box-shadow: 0 0 4px rgba(0, 86, 179, 0.8);
+}
+.next {
+  display: block;
+  margin: auto;
+  background-color: #d94fd5;
+  margin-top: 10px;
+  padding: 13px 40px;
+  border-radius: 50px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  background-color: black;
+  border: 2px solid #d94fd5;
+  position: relative;
+  margin-bottom: -40px;
+  animation: borderAnimation 4s linear infinite;
+}
 
-    @keyframes borderAnimation {
-      0% {
-        border-color: #FF3BFF;
-      }
-      25% {
-        border-color: #ECBFBF;
-      }
-      50% {
-        border-color: #5C24FF;
-      }
-      75% {
-        border-color: #D94FD5;
-      }
-      100% {
-        border-color: #FF3BFF;
-      }
-    }
+@keyframes borderAnimation {
+  0% {
+    border-color: #ff3bff;
+  }
+  25% {
+    border-color: #ecbfbf;
+  }
+  50% {
+    border-color: #5c24ff;
+  }
+  75% {
+    border-color: #d94fd5;
+  }
+  100% {
+    border-color: #ff3bff;
+  }
+}
 </style>
 
 <script setup>
-import {  ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ExcelJS from 'exceljs' // Import ExcelJS
 import { saveAs } from 'file-saver' // Ensure this is at the top of your script
@@ -186,10 +241,9 @@ async function Single_server_1() {
   const workbook = new ExcelJS.Workbook()
   const simulationSheet = workbook.addWorksheet('Simulation')
 
-  simulationSheet.getCell(`O3`).value ='Service Table' // Service ID
-  simulationSheet.getCell(`S5`).value ='Metric' // Service ID
-  simulationSheet.getCell(`T5`).value ='Value' // Service ID
-
+  simulationSheet.getCell(`O3`).value = 'Service Table' // Service ID
+  simulationSheet.getCell(`S5`).value = 'Metric' // Service ID
+  simulationSheet.getCell(`T5`).value = 'Value' // Service ID
 
   // Write the entire service table columns to the simulation sheet
   serviceTable.forEach((row, index) => {
@@ -295,8 +349,8 @@ async function Single_server_1() {
   // --- System Analysis Table ---
   simulationSheet.getCell('T3').value = 'System Analysis Table'
 
-simulationSheet.getCell('S5').value = 'Metric'
-simulationSheet.getCell('T5').value = 'Value'
+  simulationSheet.getCell('S5').value = 'Metric'
+  simulationSheet.getCell('T5').value = 'Value'
 
   simulationSheet.getCell('S6').value = 'Number of Customers'
   simulationSheet.getCell('T6').value = {
@@ -346,7 +400,6 @@ simulationSheet.getCell('T5').value = 'Value'
     alert('Failed to save the Excel file. Please try again.')
   }
 }
-
 
 async function Single_server_2() {
   if (!excelFile.value) {
@@ -464,7 +517,8 @@ async function Single_server_2() {
     if (rowIndex != 4)
       simulationSheet.getCell(`O${rowIndex}`).value = {
         formula: `O${rowIndex - 1} + N${rowIndex}`,
-      } // Cumulative Probability
+      }
+    // Cumulative Probability
     else simulationSheet.getCell(`O${rowIndex}`).value = { formula: `N4` } // Cumulative Probability
     if (rowIndex != 4)
       simulationSheet.getCell(`P${rowIndex}`).value = {
@@ -724,7 +778,8 @@ async function Double_server() {
     if (rowIndex != 4)
       simulationSheet.getCell(`R${rowIndex}`).value = {
         formula: `R${rowIndex - 1} + Q${rowIndex}`,
-      } // Cumulative Probability
+      }
+    // Cumulative Probability
     else simulationSheet.getCell(`R${rowIndex}`).value = { formula: `Q4` } // Cumulative Probability
     if (rowIndex != 4)
       simulationSheet.getCell(`S${rowIndex}`).value = {
@@ -863,10 +918,10 @@ async function Double_server() {
     simulationSheet.getCell(`D${i}`).value = { formula: `D${i - 1}+C${i}` }
     simulationSheet.getCell(`E${i}`).value = { formula: `RANDBETWEEN(1, 100)` }
     simulationSheet.getCell(`F${i}`).value = {
-      formula: `IF(MAX($H$4:H${i - 1}) > MAX($K$4:K${i - 1}), "", MAX($H$4:H${i - 1}, D${i}))`
+      formula: `IF(MAX($H$4:H${i - 1}) > MAX($K$4:K${i - 1}), "", MAX($H$4:H${i - 1}, D${i}))`,
     }
 
-      simulationSheet.getCell(`G${i}`).value = {
+    simulationSheet.getCell(`G${i}`).value = {
       formula: `IF(F${i}<>"",LOOKUP(E${i},Y4:Z${uniqueDurations.length + 3},V4:V${uniqueDurations.length + 3}),"")`,
     }
     simulationSheet.getCell(`H${i}`).value = {
@@ -894,45 +949,33 @@ async function Double_server() {
   simulationSheet.getCell('AR3').value = 'Metric'
   simulationSheet.getCell('AS3').value = 'Value'
 
-   simulationSheet.getCell('AR4').value = 'No of Customers'
-   simulationSheet.getCell('AS4').value = {
+  simulationSheet.getCell('AR4').value = 'No of Customers'
+  simulationSheet.getCell('AS4').value = {
     formula: `COUNT(A4:A${noCustomers.value + 3})+3`,
   }
 
-   simulationSheet.getCell('AR5').value = 'Total Waiting'
-   simulationSheet.getCell('AS5').value = {
+  simulationSheet.getCell('AR5').value = 'Total Waiting'
+  simulationSheet.getCell('AS5').value = {
     formula: `SUM(L4:L${noCustomers.value + 3})`,
   }
 
+  simulationSheet.getCell('AR6').value = 'Avg Waiting'
+  simulationSheet.getCell('AS6').value = { formula: `AS5/AS4` }
 
-
-   simulationSheet.getCell('AR6').value = 'Avg Waiting'
-   simulationSheet.getCell('AS6').value = { formula: `AS5/AS4` }
-
-
-   simulationSheet.getCell('AR7').value = 'Probability of Waiting'
-   simulationSheet.getCell('AS7').value = {
+  simulationSheet.getCell('AR7').value = 'Probability of Waiting'
+  simulationSheet.getCell('AS7').value = {
     formula: `COUNTIF(L4:L${noCustomers.value + 3}, ">0") / AS4`,
   }
 
-
-
-   simulationSheet.getCell('AR8').value = 'Number of Idle server_01'
-   simulationSheet.getCell('AS8').value = {
+  simulationSheet.getCell('AR8').value = 'Number of Idle server_01'
+  simulationSheet.getCell('AS8').value = {
     formula: `COUNTIF(M4:M${noCustomers.value + 3}, "Server_01")`,
   }
 
-   simulationSheet.getCell('AR9').value = 'Number of Idle server_02'
-   simulationSheet.getCell('AS9').value = {
+  simulationSheet.getCell('AR9').value = 'Number of Idle server_02'
+  simulationSheet.getCell('AS9').value = {
     formula: `COUNTIF(M4:M${noCustomers.value + 3}, "Server_02")`,
   }
-
-
-
-
-
-
-
 
   // Write the output Excel file
   const excelBuffer = await workbook.xlsx.writeBuffer() // Use writeBuffer
@@ -945,7 +988,7 @@ const SimulateData = async () => {
     await Single_server_1() // Call the function when level is Beginner
   } else if (level == 'Intermediate') {
     await Single_server_2()
-  } else if (level=='Advanced'){
+  } else if (level == 'Advanced') {
     await Double_server()
   }
   // You can add more logic for other levels here
@@ -955,4 +998,3 @@ const onFileChange = event => {
   excelFile.value = event.target.files[0] // Store the uploaded file
 }
 </script>
-

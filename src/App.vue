@@ -11,6 +11,9 @@ import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue';
 </script>
 <style>
+body{
+  overflow: auto;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;

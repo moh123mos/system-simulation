@@ -10,12 +10,16 @@
         <br />
         providing insights and analysis.
       </p>
-      <select>
+      <select v-model="level">
         <option value="Beginner">Single Server QS Random</option>
         <option value="Intermediate">Single Server QS probability</option>
         <option value="Advanced">Double Sever</option>
       </select>
-      <button>Simulate</button>
+      <button>
+        <router-link class="link" :to="level + '/our-services/'"
+          >start</router-link
+        >
+      </button>
     </div>
     <!-- info -->
     <div class="ball ball1"></div>
@@ -24,7 +28,6 @@
   </div>
   <!-- items -->
 </template>
-
 <style lang="scss">
 body,
 html {
@@ -48,7 +51,7 @@ html {
 }
 
 .items {
-  background-image: url(@/assets/images/roboto.svg);
+  background-image: url(@/assets/images/robots.png);
   background-size: contain;
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -270,3 +273,9 @@ html {
   }
 }
 </style>
+
+<script setup>
+import { ref } from 'vue';
+
+let level = ref('Beginner');
+</script>

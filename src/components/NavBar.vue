@@ -1,12 +1,23 @@
 <template>
-  <div class="container m-auto py-5 px-4 flex justify-between items-center nav-bar">
-    <div class="logo text-[24px]">zootopia</div>
+  <div
+    class="container m-auto py-5 px-4 flex justify-between items-center nav-bar"
+  >
+    <div
+      class="logo text-[24px] cursor-pointer"
+      @click="
+        () => {
+          $router.replace('/')
+        }
+      "
+    >
+      zootopia
+    </div>
     <ul class="flex justify-between items-center gap-9">
-      <li v-for="link in links" :key="link">
+      <!-- <li v-for="link in links" :key="link">
         <router-link :to="link.url" class="text-[18px] duration-300 hover:text-[#00F0FF]">{{
           link.title
         }}</router-link>
-      </li>
+      </li> -->
     </ul>
     <ul class="flex justify-between items-center gap-2">
       <li class="cursor-pointer">
@@ -19,7 +30,10 @@
         ></span>
       </li>
       <li v-for="icon in icons" :key="icon">
-        <router-link :to="icon.url" class="duration-300 hover:text-[#00F0FF] text-[20px]">
+        <router-link
+          :to="icon.url"
+          class="duration-300 hover:text-[#00F0FF] text-[20px]"
+        >
           <span :class="icon.mdi"></span>
         </router-link>
       </li>
