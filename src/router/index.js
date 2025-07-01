@@ -1,13 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createMemoryHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CreateAnalysis from '@/views/createAnalysis.vue'
 import ViewAnalysis from '@/views/viewAnalysis.vue'
 import AiAnalyzer from '@/views/aiAnalyzer.vue'
 import OurServices from '@/views/ourServices.vue'
 import AnimatorPage from '@/views/animatorPage.vue'
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+
+const routes = [
     {
       path: '/',
       name: 'home',
@@ -38,7 +37,11 @@ const router = createRouter({
       name: 'ai-page',
       component: AiAnalyzer,
     },
-  ],
+  ]; 
+  
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes,
 })
 
 export default router
